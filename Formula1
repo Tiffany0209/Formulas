@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ultrasound Physics Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+    .quiz-container {
+      background-color: white;
+      padding: 20px;
+      border-radius: 5px;
+      max-width: 600px;
+      margin: 0 auto;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .question {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    .options {
+      margin-bottom: 20px;
+    }
+    .options button {
+      display: block;
+      margin-bottom: 10px;
+      padding: 10px;
+      font-size: 16px;
+      width: 100%;
+      cursor: pointer;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    .options button:hover {
+      background-color: #0056b3;
+    }
+    .result {
+      font-size: 18px;
+      margin-top: 20px;
+      color: #28a745;
+    }
+    .incorrect {
+      color: #dc3545;
+    }
+  </style>
+</head>
+<body>
+
+<div class="quiz-container">
+  <div id="question" class="question"></div>
+  <div id="options" class="options"></div>
+  <div id="feedback" class="result"></div>
+</div>
+
+<script>
+  // List of questions
+  const questions = [
+    {
+      question: "What is the unit for impedance?",
+      options: ["Hertz", "Rayls", "Watts"],
+      answer: "Rayls",
+      explanation: "Impedance is measured in Rayls."
+    },
+    {
+      question: "What is the speed of sound in soft tissue?",
+      options: ["1540 m/s", "330 m/s", "5000 m/s"],
+      answer: "1540 m/s",
+      explanation: "The speed of sound in soft tissue is approximately 1540 meters per second."
+    },
+    {
+      question: "What does the 13-second rule refer to?",
+      options: ["Distance calculation", "Time for an echo to return", "Depth of penetration"],
+      answer: "Time for an echo to return",
+      explanation: "The 13-second rule is used in ultrasound physics to determine how long it takes for an echo to return to the transducer."
+    }
+    // Add more questions here
+  ];
+
+  let currentQuestionIndex = 0;
+
+  function loadQuestion() {
+    const questionElement = document.getElementById("question");
+    const optionsElement = document.getElementById("options");
+    const feedbackElement = document.getElementById("feedback");
+
+    // Clear previous feedback
+    feedbackElement.textContent = "";
+
+    // Load the current question
+    const currentQuestion = questions[currentQuestionIndex];
+    questionElement.textContent = currentQuestion.question;
+
+    // Clear previous options
+    optionsElement.innerHTML = "";
+
+    // Generate the options as buttons
+    currentQuestion.options.forEach(option => {
+      const button = document.createElement("button");
+      button.textContent = option;
+      button.onclick = () => checkAnswer(option);
+      optionsElement.appendChild(button);
+    });
+  }
+
+  function checkAnswer(selectedOption) {
+    const feedbackElement = document.getElementById("feedback");
+    const currentQuestion = questions[currentQuestionIndex];
+
+    // Check if the answer is correct
+    if (selectedOption === currentQuestion.answer) {
+      feedbackElement.textContent = "Correct! " + currentQuestion.explanation;
+      feedbackElement.className = "result";
+    } else {
+      feedbackElement.textContent = "Incorrect. The correct answer is " + currentQuestion.answer + ". " + currentQuestion.explanation;
+      feedbackElement.className = "result incorrect";
+    }
+
+    // Move to the next question after a delay
+    setTimeout(() => {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < questions.length) {
+        loadQuestion();
+      } else {
+        feedbackElement.textContent = "Quiz complete! Well done!";
+      }
+    }, 2000); // 2-second delay for feedback
+  }
+
+  // Start the quiz by loading the first question
+  loadQuestion();
+</script>
+
+</body>
+</html>
